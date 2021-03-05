@@ -270,7 +270,6 @@ core_testenv = [
 #    'pytest-rerunfailures',  # disabled 2020-08-28 for <https://github.com/pytest-dev/pytest-rerunfailures/issues/128>
     'mock',
     'cython',
-    'nmslib',
     'pyemd',
     'testfixtures',
     'Morfessor==2.0.2a4',
@@ -278,12 +277,14 @@ core_testenv = [
 ]
 
 # Add additional requirements for testing on Linux that are skipped on Windows.
-linux_testenv = core_testenv[:] + visdom_req + ['pyemd', ]
+linux_testenv = core_testenv[:] + visdom_req + ['pyemd', 'nmslib', ]
 
 # Skip problematic/uninstallable  packages (& thus related conditional tests) in Windows builds.
 # We still test them in Linux via Travis, see linux_testenv above.
 # See https://github.com/RaRe-Technologies/gensim/pull/2814
-win_testenv = core_testenv[:]
+win_testenv = core_testenv[:] + ['nmslib', ]
+if sys.version_info < (3,9):
+	win_testenv = core_testenv[:]
 
 #
 # This list partially duplicates requirements_docs.txt.
